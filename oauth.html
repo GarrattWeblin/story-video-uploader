@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Authorization complete - Story Video Uploader</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #101216; color: #e6e8ee; margin: 0; padding: 40px 20px; display: flex; justify-content: center; }
+  .card { max-width: 560px; background: #1a1d24; border-radius: 16px; padding: 32px; }
+  h1 { font-size: 22px; margin: 0 0 8px; }
+  p { line-height: 1.6; color: #b9c0cf; }
+  .codebox { background: #101216; border: 1px solid #2a2f3a; border-radius: 10px; padding: 14px; font-family: monospace; font-size: 13px; word-break: break-all; color: #7aa2f7; margin: 12px 0; }
+  .btn { display: inline-block; background: #3b6ef5; color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-size: 14px; cursor: pointer; }
+  .steps { background: #14171e; border-radius: 10px; padding: 14px; font-size: 13px; color: #b9c0cf; }
+  .steps b { color: #e6e8ee; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Authorization complete</h1>
+  <div id="msg">Reading the code from the redirect...</div>
+  <div class="codebox" id="codebox" style="display:none"></div>
+  <button class="btn" id="copyBtn" style="display:none" onclick="copyCode()">Copy code</button>
+  <div class="steps" id="steps" style="display:none">
+    <b>Next step (once per year):</b>
+    <ol style="margin:8px 0 0; padding-left:20px">
+      <li>Open your file server Setup page: <b>http://192.168.8.111:8092/setup</b></li>
+      <li>Scroll to <b>"Authorize TikTok"</b> and paste the code into the <b>"paste code here"</b> box</li>
+      <li>Click <b>"Exchange code"</b> &mdash; tokens save automatically and uploads are enabled</li>
+    </ol>
+  </div>
+</div>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+  if (code) {
+    document.getElementById('msg').textContent = 'Code received. Copy it, then finish on your file server.';
+    document.getElementById('codebox').textContent = code;
+    document.getElementById('codebox').style.display = 'block';
+    document.getElementById('copyBtn').style.display = 'inline-block';
+    document.getElementById('steps').style.display = 'block';
+  } else {
+    document.getElementById('msg').textContent = 'No code found in the URL. If you reached this page by mistake, close it and start the authorize flow from your file server Setup page.';
+  }
+  function copyCode() {
+    const code = document.getElementById('codebox').textContent;
+    const fallback = () => {
+      const ta = document.createElement('textarea');
+      ta.value = code;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      return ok;
+    };
+    const done = (ok) => {
+      document.getElementById('copyBtn').textContent = ok ? 'Copied!' : 'Copy failed';
+      setTimeout(() => { document.getElementById('copyBtn').textContent = 'Copy code'; }, 1500);
+    };
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(code).then(() => done(true)).catch(() => done(fallback()));
+    } else {
+      done(fallback());
+    }
+  }
+</script>
+</body>
+</html>
