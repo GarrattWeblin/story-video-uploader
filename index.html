@@ -3,27 +3,114 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Story Video Uploader</title>
+<title>Story Video Uploader — AI narrated story videos for TikTok</title>
+<meta name="description" content="Story Video Uploader turns AI-written short stories into narrated, captioned videos and posts them privately to your own TikTok account for review before publishing.">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
 <style>
-  body { font-family: system-ui, sans-serif; background: #101216; color: #e6e8ee; margin: 0; padding: 40px 20px; display: flex; justify-content: center; }
-  .card { max-width: 640px; background: #1a1d24; border-radius: 16px; padding: 32px; }
-  h1 { margin: 0 0 8px; font-size: 26px; }
-  p { line-height: 1.6; color: #b9c0cf; }
-  a { color: #7aa2f7; }
-  img { width: 96px; height: 96px; border-radius: 18px; }
-  .links { margin-top: 24px; }
-  .links a { display: inline-block; margin-right: 16px; }
+  :root { --bg:#101216; --card:#1a1d24; --line:#2a2f3a; --text:#e6e8ee; --muted:#b9c0cf; --accent:#7aa2f7; }
+  * { box-sizing: border-box; }
+  body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; }
+  header { border-bottom: 1px solid var(--line); background: #14171e; position: sticky; top: 0; }
+  .nav { max-width: 860px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 12px; }
+  .nav img { width: 32px; height: 32px; border-radius: 8px; }
+  .nav .brand { font-weight: 700; font-size: 16px; margin-right: auto; }
+  .nav a { color: var(--muted); text-decoration: none; margin-left: 18px; font-size: 14px; }
+  .nav a:hover { color: var(--accent); }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 20px 64px; }
+  .hero { display: flex; gap: 24px; align-items: center; margin-bottom: 40px; }
+  .hero img { width: 112px; height: 112px; border-radius: 22px; flex-shrink: 0; }
+  .hero h1 { margin: 0 0 8px; font-size: 30px; }
+  .hero p { margin: 0; color: var(--muted); font-size: 17px; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 26px 28px; margin-bottom: 22px; }
+  h2 { margin: 0 0 14px; font-size: 21px; }
+  h3 { margin: 18px 0 6px; font-size: 16px; color: var(--accent); }
+  p { color: var(--muted); }
+  ol, ul { color: var(--muted); padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  li b, p b { color: var(--text); }
+  a { color: var(--accent); }
+  .steps { counter-reset: step; list-style: none; padding-left: 0; }
+  .steps li { position: relative; padding-left: 40px; margin-bottom: 14px; }
+  .steps li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: 2px; width: 26px; height: 26px; border-radius: 50%; background: #232a3a; color: var(--accent); font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+  footer { border-top: 1px solid var(--line); background: #14171e; }
+  .foot { max-width: 860px; margin: 0 auto; padding: 18px 20px; font-size: 13px; color: var(--muted); display: flex; gap: 18px; flex-wrap: wrap; }
+  .foot a { color: var(--muted); }
+  .foot a:hover { color: var(--accent); }
+  @media (max-width: 600px) { .hero { flex-direction: column; text-align: center; } }
 </style>
 </head>
 <body>
-<div class="card">
-  <img src="icon.png" alt="Story Video Uploader icon">
-  <h1>Story Video Uploader</h1>
-  <p>This app generates narrated story videos from a local AI pipeline and uploads them to your own TikTok account for review before publishing.</p>
-  <div class="links">
+<header>
+  <div class="nav">
+    <img src="icon.png" alt="Story Video Uploader logo">
+    <span class="brand">Story Video Uploader</span>
+    <a href="#how">How it works</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#faq">FAQ</a>
+    <a href="tos.html">Terms</a>
+  </div>
+</header>
+<main>
+  <div class="hero">
+    <img src="icon.png" alt="Story Video Uploader icon">
+    <div>
+      <h1>Story Video Uploader</h1>
+      <p>A personal tool that turns AI-written short stories into narrated, captioned videos &mdash; and posts them privately to your own TikTok account for review before anything goes public.</p>
+    </div>
+  </div>
+
+  <section id="what">
+    <h2>What it does</h2>
+    <p>Story Video Uploader runs a fully local, automated video pipeline. It writes a short story with a local AI language model, narrates it with text-to-speech, renders the narration over gameplay-style background footage with word-synced captions, and then uploads the finished video to TikTok.</p>
+    <p>Every upload is created as a <b>private (self-only) post</b> on the authorizing user's own account. Nothing is ever posted to other accounts, and nothing goes public until the account owner reviews and publishes it themselves.</p>
+  </section>
+
+  <section id="how">
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><b>Story generation.</b> A local AI language model writes an original short story in a chosen genre (scary, funny, confession, and more).</li>
+      <li><b>Narration.</b> The story is converted to speech locally using neural text-to-speech, producing a natural voice-over with word-level timing.</li>
+      <li><b>Video rendering.</b> The narration is rendered over background footage (such as Minecraft parkour or subway visuals) with synchronized captions using ffmpeg.</li>
+      <li><b>Private upload.</b> The finished video is uploaded to the user's own TikTok account through TikTok's Content Posting API (Direct Post), with a title and hashtags, always as a private post.</li>
+      <li><b>Human review.</b> The user opens the TikTok app, reviews the private video, and decides whether to publish it.</li>
+    </ol>
+  </section>
+
+  <section id="privacy">
+    <h2>Privacy &amp; data handling</h2>
+    <ul>
+      <li><b>Single-user, personal use.</b> This app is not a service. It has no accounts, no login, and no other users &mdash; it operates only on the owner's own TikTok account.</li>
+      <li><b>Minimal data.</b> Only the OAuth tokens needed to post to the authorizing user's account are stored, on the owner's own machine. No data is sold, shared, or analyzed.</li>
+      <li><b>Private by default.</b> Videos are posted as self-only (private). Publishing is always a separate, manual step by the account owner.</li>
+      <li><b>Revoke anytime.</b> Access can be revoked at any time from TikTok's <i>Settings &amp; privacy &rarr; Security &amp; permissions</i>.</li>
+    </ul>
+    <p>Full details: <a href="privacy.html">Privacy Policy</a>.</p>
+  </section>
+
+  <section id="ai">
+    <h2>AI-generated content</h2>
+    <p>All stories are original works generated by AI. Videos produced by this pipeline are labeled as AI-generated when published, in line with TikTok's AI-generated content policy.</p>
+  </section>
+
+  <section id="faq">
+    <h2>FAQ</h2>
+    <h3>Who can use this app?</h3>
+    <p>It is a personal tool built for its owner. There is no sign-up and no public service &mdash; authorization connects it to your own TikTok account only.</p>
+    <h3>Does it post publicly without my approval?</h3>
+    <p>No. Every video is posted privately (self-only). You review it in the TikTok app and publish it manually if you like it.</p>
+    <h3>What permissions does it request?</h3>
+    <p>Only <b>user.info.basic</b> (to identify your account) and <b>video.publish</b> (to upload videos on your behalf). Nothing else.</p>
+    <h3>Where can I read the Terms and Privacy Policy?</h3>
+    <p>Here: <a href="tos.html">Terms of Service</a> &middot; <a href="privacy.html">Privacy Policy</a>.</p>
+  </section>
+</main>
+<footer>
+  <div class="foot">
+    <span>&copy; 2026 Story Video Uploader</span>
     <a href="tos.html">Terms of Service</a>
     <a href="privacy.html">Privacy Policy</a>
   </div>
-</div>
+</footer>
 </body>
 </html>
